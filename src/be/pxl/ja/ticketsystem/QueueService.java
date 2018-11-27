@@ -1,28 +1,38 @@
 package be.pxl.ja.ticketsystem;
 
+import java.util.ArrayDeque;
+import java.util.HashMap;
+
 public class QueueService {
 
-    public void addToQueue(int eventID, User user) {
+    private HashMap<String, ArrayDeque<User>> que = new HashMap<>();
 
+    public void addToQueue(String eventID, User user) {
+        if (!que.containsKey(eventID)) {
+            que.put(eventID, new ArrayDeque<>());
+        }
+        que.get(eventID).add(user);
     }
 
-    public void getQueue(int eventId) {
-
+    public ArrayDeque getQueue(String eventId) {
+        return que.get(eventId);
     }
 
-    public void getNextInLine(int eventID) {
-
+    public User getNextInLine(String eventID) {
+        return que.get(eventID).peek();
     }
 
-    public void removeFromQueue(int eventID) {
-
+    public User removeFromQueue(String eventID) {
+        return que.get(eventID).poll();
     }
 
-    public void printQueue(int eventID) {
-
+    public void printQueue(String eventID) {
+        if (que.containsKey(eventID)) {
+            que.get(eventID).forEach(System.out::println);
+        }
     }
 
-    public void getQueueSize(int eventID) {
-
+    public int QueueSize(String eventID) {
+        return que.get(eventID).size();
     }
 }
